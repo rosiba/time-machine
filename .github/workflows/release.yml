@@ -45,15 +45,20 @@ jobs:
       - run: flutter pub get
       - run: flutter build macos --release
 
-      - name: Package macOS build
+      - name: Package macOS DMG
         run: |
-          cd build/macos/Build/Products/Release
-          tar -czf ../../../../../time_machine-macos.tar.gz time_machine.app
+          mkdir -p dist_mac
+          cp -r build/macos/Build/Products/Release/*.app dist_mac/
+          hdiutil create \
+            -volname "Time Machine" \
+            -srcfolder dist_mac \
+            -ov -format UDZO \
+            time_machine-macos.dmg
 
       - uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: time_machine-macos.tar.gz
+          path: time_machine-macos.dmg
 
   build-windows:
     runs-on: windows-latest
@@ -67,13 +72,15 @@ jobs:
       - run: flutter pub get
       - run: flutter build windows --release
 
-      - name: Package Windows build
-        run: Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath time_machine-windows-x64.zip
+      - name: Build Windows installer
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=$version windows\installer.iss
 
       - uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: time_machine-windows-x64.zip
+          path: windows\time_machine-windows-x64-setup.exe
 
   release:
     needs: [build-linux, build-macos, build-windows]
@@ -97,5 +104,5 @@ jobs:
         with:
           files: |
             time_machine-linux-x64.tar.gz
-            time_machine-macos.tar.gz
-            time_machine-windows-x64.zip
+            time_machine-macos.dmg
+            time_machine-windows-x64-setup.exe
