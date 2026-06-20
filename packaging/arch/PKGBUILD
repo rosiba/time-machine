@@ -6,6 +6,7 @@ pkgdesc='Time tracker for freelancers'
 arch=('x86_64')
 license=('custom')
 depends=('gtk3')
+options=('!strip' '!debug')
 source=("time-machine-$pkgver.tar.gz"
         'time_machine.desktop'
         'icon.png')
