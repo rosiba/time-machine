@@ -1,0 +1,10 @@
+Package: time-machine
+Version: VERSION
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: libgtk-3-0
+Maintainer: Rojhat Sinan Balka <rojbalka@gmail.com>
+Description: Time tracker for freelancers
+ A minimal cross-platform time tracking application for freelancers.
+ Track time by project with a simple start/stop timer.

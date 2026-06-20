@@ -1,0 +1,25 @@
+# Maintainer: Rojhat Sinan Balka <rojbalka@gmail.com>
+pkgname=time-machine
+pkgver=PKGVER
+pkgrel=1
+pkgdesc='Time tracker for freelancers'
+arch=('x86_64')
+license=('custom')
+depends=('gtk3')
+source=("time-machine-$pkgver.tar.gz"
+        'time_machine.desktop'
+        'icon.png')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+package() {
+    install -dm755 "$pkgdir/usr/lib/time_machine"
+    cp -r "$srcdir/bundle"/* "$pkgdir/usr/lib/time_machine/"
+
+    printf '#!/bin/bash\nexec /usr/lib/time_machine/time_machine "$@"\n' \
+        | install -Dm755 /dev/stdin "$pkgdir/usr/bin/time_machine"
+
+    install -Dm644 "$srcdir/time_machine.desktop" \
+        "$pkgdir/usr/share/applications/time_machine.desktop"
+    install -Dm644 "$srcdir/icon.png" \
+        "$pkgdir/usr/share/icons/hicolor/256x256/apps/time_machine.png"
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Time Machine
+Comment=Time tracker for freelancers
+Exec=time_machine
+Icon=time_machine
+Type=Application
+Categories=Utility;Office;
+StartupWMClass=time_machine
