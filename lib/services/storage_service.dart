@@ -12,7 +12,9 @@ class StorageService {
 
   Future<String> get _dir async {
     final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
+    final appDir = Directory('${dir.path}/Time Machine');
+    if (!appDir.existsSync()) await appDir.create();
+    return appDir.path;
   }
 
   Future<List<Project>> loadProjects() async {
